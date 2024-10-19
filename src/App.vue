@@ -1,10 +1,10 @@
 <script setup>
 import contactFormComponent from './components/contactFormComponent.vue';
+import '@fontsource/geist-sans';
 </script>
 
 <template>
   <main>
-    <h1>Contact book</h1>
     <contactFormComponent/>
   </main>
 </template>
