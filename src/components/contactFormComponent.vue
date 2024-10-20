@@ -32,12 +32,12 @@
         <div class="exp">
         <h3>This basic program is a contact book where users can add contacts by entering a name and phone number. It displays the saved contacts in a list and allows users to filter them in real-time using a search input. The filtered results update dynamically as the user types.</h3>
         </div>
-        <form>
+        <form @submit="saveContact">
             <div class="inputs">
             <input type="text" v-model="name" placeholder="Write your name..." required >
-            <input type="numeric" v-model="number" placeholder="Write your number..." required >
+            <input type="number" v-model="number" placeholder="Write your number..." required minlength=9>
             </div>
-            <button @click="saveContact">Save contact</button>
+            <button type="submit">Save contact</button>
             <input type="text" v-model="contact1" placeholder="Filter contacts" class="filt">
         <ul>
             <li v-for="contact in filteredContacts" :key="contact.name"  
