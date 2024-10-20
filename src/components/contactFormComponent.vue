@@ -29,9 +29,14 @@
     <div class="container">
     <h1>Contact book <span class="uli">by Uli</span></h1>
     <main>
+        <div class="exp">
+        <h3>This basic program is a contact book where users can add contacts by entering a name and phone number. It displays the saved contacts in a list and allows users to filter them in real-time using a search input. The filtered results update dynamically as the user types.</h3>
+        </div>
         <form>
+            <div class="inputs">
             <input type="text" v-model="name" placeholder="Write your name..." required >
-            <input type="text" v-model="number" placeholder="Write your number..." required >
+            <input type="numeric" v-model="number" placeholder="Write your number..." required >
+            </div>
             <button @click="saveContact">Save contact</button>
             <input type="text" v-model="contact1" placeholder="Filter contacts" class="filt">
         <ul>
@@ -45,22 +50,35 @@
 </template>
 
 <style scoped>
-    div {
-        min-height: 90vh;
+    
+    main {
+        width: 400px;
+
     }
 
+    h3 {
+       color:#61677C;
+       opacity: 0.7;
+    }
+
+    .inputs {
+        display: flex;
+        flex-wrap: nowrap;
+    }
     .container {
         display: grid;
         place-content: center;
-        flex-direction: column;
-        align-items: center;
+        place-items: center;
+        place-self: center;
+        justify-items: end;
+        height: 90vh;
+        ;
     }
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        
+
+    .exp {
+        max-width: 400px;
     }
+    
     li {
         list-style: none;
         font-size: 20px;
@@ -74,7 +92,7 @@
     }
 
     .filt {
-        width: 325px;
+        width: 400px;
     }
 
     .uli {
