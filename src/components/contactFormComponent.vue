@@ -22,6 +22,7 @@ const saveContact = (contact) => {
     number.value = ''
     newName.value = ''
     newNumber.value = ''
+    contact1.value = ''
     console.log(contacts)
     active(buttonRef)
 }
@@ -82,12 +83,12 @@ const updateContact = (contact) => {
         <h1>Contact book <span class="uli">by Uli</span></h1>
         <main>
             <div class="exp">
-                <h3>This program is a basic contact book where users can add contacts by entering a name and phone number. The saved contacts are displayed in a list that can be filtered in real-time using a search input. The filtered results update dynamically as the user types. Additionally, it allows updating and deleting existing contacts through specific buttons for each action, with a modal form for updating contacts.</h3>
+                <h3>This program is a basic contact book where users can add contacts by entering a name and phone number. The saved contacts are displayed in a list that can be filtered in real-time using a search input, with dynamic updates as the user types. It also allows updating and deleting contacts through specific buttons and a modal form for updates. Please note, this is an educational example; it's not intended for real data, phone numbers are not validated, and all data is stored only in the browser.</h3>
             </div>
             <form @submit="saveContact">
                 <div class="inputs">
-                    <input type="text" v-model="name" placeholder="Type your name..." required>
-                    <input type="number" v-model="number" placeholder="Type your number..." required>
+                    <input type="text" v-model="name" placeholder="Type your name..." maxlength="17" required>
+                    <input type="number" v-model="number" placeholder="Type your number..." min="0" max="999999999" required>
                 </div>
                 <div class="wrapper">
                     <button ref="buttonRef" type="submit">
@@ -102,7 +103,7 @@ const updateContact = (contact) => {
                     </button>
                 </div>
             </form>
-            <input type="text" v-model="contact1" placeholder="Search contacts..." class="filt">
+            <input type="text" v-model="contact1" placeholder="Search contacts by name..." class="filt">
             <p v-if="contact1 && filteredContacts.length === 0">No contacts found</p>
             <ul>
                 <div class="contact">
@@ -124,8 +125,8 @@ const updateContact = (contact) => {
                         <div class="modal-body">
                             <form @submit="updateContact">
                             <div class="newInputs">
-                                <input id="inputNm" type="text" v-model="newName" placeholder="Name" required>
-                                <input id="inputNb" type="number" v-model="newNumber" placeholder="Number" required>
+                                <input id="inputNm" type="text" v-model="newName" placeholder="Name" maxlength="17" required>
+                                <input id="inputNb" type="number" v-model="newNumber" placeholder="Number" min="0" max="999999999" required>
                                 <button ref="updateButtonRef" type="submit">Update contact</button>
                             </div>
                             </form> 
@@ -200,8 +201,11 @@ li {
     font-size: 20px;
     color: #61677C;
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     gap: 5px;
+    max-width: 500px;
+    height: auto;
 }
 
 span {
