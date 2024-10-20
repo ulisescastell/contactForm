@@ -4,8 +4,11 @@ import { computed, ref } from 'vue'
 let contacts = ref([])
 const name = ref('')
 const number = ref('')
+const newName = ref('')
+const newNumber = ref('')
 const contact1 = ref('')
 const buttonRef = ref(null)
+const showModal = ref(false)
 
 const saveContact = (contact) => {
     contact.preventDefault();
@@ -15,6 +18,7 @@ const saveContact = (contact) => {
     });
     name.value = ''
     number.value = ''
+    contact1.value = ''
     console.log(contacts)
     active()
 }
@@ -26,7 +30,11 @@ const filteredContacts = computed(() => {
     )
 })
 
-//button
+const deleteContact = (contact) => {
+    contacts.value.splice(contact, 1)
+    active()
+}
+
 const active = () => {
     if (buttonRef.value) {
         buttonRef.value.classList.add("is_active")
@@ -35,6 +43,22 @@ const active = () => {
         }, 1000)
     }
 }
+
+const closeModal = () => {
+    showModal.value = false  
+}
+
+const updateContact = (contact) => {
+    deleteContact(contact)
+    contacts.value.push({
+        name: newName.value,
+        number: newNumber.value
+    });
+    contact.preventDefault()
+    closeModal()
+    active()
+}
+
 
 
 
@@ -66,18 +90,62 @@ const active = () => {
                         </div>
                     </button>
                 </div>
-                <input type="text" v-model="contact1" placeholder="Filter contacts" class="filt">
-                <ul>
+            </form>
+            <input type="text" v-model="contact1" placeholder="Filter contacts" class="filt">
+            <ul>
+                <div class="contact">
                     <li v-for="contact in filteredContacts" :key="contact.name"
                         :title="`Contact name: ${contact.name}, Number: ${contact.number}`">
-                        {{ contact.name }} - <span>{{ contact.number }}</span></li>
-                </ul>
-            </form>
+                        {{ contact.name }} - <span>{{ contact.number }}</span>
+                        <button @click="showModal = true" class="modal-trigger">Update</button>
+                        <button @click="deleteContact">Delete</button>
+                    </li>
+                </div>
+
+                <div v-if="showModal" class="modal-wrap" @click.self="closeModal">
+                    <div class="modal-bg"></div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="modal-title">Update contact</span>
+                            <span class="modal-close" @click="closeModal">✖</span>
+                        </div>
+                        <div class="modal-body">
+                            <form @submit="updateContact">
+                            <div class="newInputs">
+                                <input type="text" v-model="newName" required>
+                                <input type="number" v-model="newNumber" placeholder="Your new number.." required>
+                                <button ref="buttonRef" type="submit">Update contact</button>
+                            </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+
+            </ul>
         </main>
     </div>
 </template>
 
 <style scoped>
+form {
+    margin-bottom: 1rem;
+}
+
+.contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    & button {
+        width: 100px;
+    }
+}
+
+.inpts {
+    display: flex;
+
+}
+
 main {
     width: 400px;
 }
@@ -93,6 +161,14 @@ h3 {
     flex-wrap: nowrap;
 }
 
+.newInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    & input {
+        width: 350px;
+    }
+}
 .container {
     display: grid;
     place-content: center;
@@ -111,6 +187,9 @@ li {
     list-style: none;
     font-size: 20px;
     color: #61677C;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
 }
 
 span {
@@ -136,14 +215,15 @@ span {
 }
 
 button {
-    font-family: 'Geist Sans', sans-serif;;
+    font-family: 'Geist Sans', sans-serif;
+    ;
     position: relative;
     width: 170px;
     height: 40px;
     line-height: 1;
     font-size: 18px;
     font-weight: bold;
-    border: 3px solid rgb(126, 91, 208);
+    border: 1px solid rgb(126, 91, 208);
     background: EBECF0;
     color: rgb(126, 91, 208);
     border-radius: 40px;
@@ -204,5 +284,69 @@ button.is_active .success svg {
 button.is_active span {
     opacity: 0;
     visibility: hidden;
+}
+
+body {
+    background: #68b8c4;
+    text-align: center;
+    padding: 10%;
+}
+
+.modal-title {
+    font-size: 25px;
+}
+
+.modal-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    width: 400px;
+    padding: 20px;
+    position: relative;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>
