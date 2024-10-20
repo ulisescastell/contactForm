@@ -8,7 +8,9 @@ const newName = ref('')
 const newNumber = ref('')
 const contact1 = ref('')
 const buttonRef = ref(null)
+const updateButtonRef = ref(null);
 const showModal = ref(false)
+
 
 const saveContact = (contact) => {
     contact.preventDefault();
@@ -19,8 +21,10 @@ const saveContact = (contact) => {
     name.value = ''
     number.value = ''
     contact1.value = ''
+    newName.value = ''
+    newNumber.value = ''
     console.log(contacts)
-    active()
+    active(buttonRef)
 }
 
 const filteredContacts = computed(() => {
@@ -32,34 +36,38 @@ const filteredContacts = computed(() => {
 
 const deleteContact = (contact) => {
     contacts.value.splice(contact, 1)
-    active()
+    newName.value = ''
+    newNumber.value = ''
+    contact1.value = ''
+    active(buttonRef)
 }
 
-const active = () => {
-    if (buttonRef.value) {
-        buttonRef.value.classList.add("is_active")
+const active = (button) => {
+    if (button && button.value) {
+        button.value.classList.add("is_active")
         setTimeout(() => {
-            buttonRef.value.classList.remove("is_active")
+            button.value.classList.remove("is_active")
         }, 1000)
     }
 }
 
 const closeModal = () => {
-    showModal.value = false  
+    showModal.value = false 
 }
-
+  
 const updateContact = (contact) => {
     deleteContact(contact)
     contacts.value.push({
         name: newName.value,
         number: newNumber.value
     });
+    newName.value = ''
+    newNumber.value = ''
+    contact1.value = ''
     contact.preventDefault()
     closeModal()
-    active()
+    active(updateButtonRef)
 }
-
-
 
 
 </script>
@@ -75,8 +83,8 @@ const updateContact = (contact) => {
             </div>
             <form @submit="saveContact">
                 <div class="inputs">
-                    <input type="text" v-model="name" placeholder="Write your name..." required>
-                    <input type="number" v-model="number" placeholder="Write your number..." required>
+                    <input type="text" v-model="name" placeholder="Type your name..." required>
+                    <input type="number" v-model="number" placeholder="Type your number..." required>
                 </div>
                 <div class="wrapper">
                     <button ref="buttonRef" type="submit">
@@ -91,12 +99,13 @@ const updateContact = (contact) => {
                     </button>
                 </div>
             </form>
-            <input type="text" v-model="contact1" placeholder="Filter contacts" class="filt">
+            <input type="text" v-model="contact1" placeholder="Search contacts..." class="filt">
+            <p v-if="contact1 && filteredContacts.length === 0">No contacts found</p>
             <ul>
                 <div class="contact">
                     <li v-for="contact in filteredContacts" :key="contact.name"
                         :title="`Contact name: ${contact.name}, Number: ${contact.number}`">
-                        {{ contact.name }} - <span>{{ contact.number }}</span>
+                        {{ contact.name }} <span>   {{ contact.number }}</span>
                         <button @click="showModal = true" class="modal-trigger">Update</button>
                         <button @click="deleteContact">Delete</button>
                     </li>
@@ -112,9 +121,9 @@ const updateContact = (contact) => {
                         <div class="modal-body">
                             <form @submit="updateContact">
                             <div class="newInputs">
-                                <input type="text" v-model="newName" required>
-                                <input type="number" v-model="newNumber" placeholder="Your new number.." required>
-                                <button ref="buttonRef" type="submit">Update contact</button>
+                                <input id="inputNm" type="text" v-model="newName" placeholder="Name" required>
+                                <input id="inputNb" type="number" v-model="newNumber" placeholder="Number" required>
+                                <button ref="updateButtonRef" type="submit">Update contact</button>
                             </div>
                             </form> 
                         </div>
