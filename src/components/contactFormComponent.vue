@@ -20,7 +20,6 @@ const saveContact = (contact) => {
     });
     name.value = ''
     number.value = ''
-    contact1.value = ''
     newName.value = ''
     newNumber.value = ''
     console.log(contacts)
@@ -40,6 +39,7 @@ const deleteContact = (contact) => {
     newNumber.value = ''
     contact1.value = ''
     active(buttonRef)
+    console.log(contacts)
 }
 
 const active = (button) => {
@@ -56,18 +56,23 @@ const closeModal = () => {
 }
   
 const updateContact = (contact) => {
-    deleteContact(contact)
     contacts.value.push({
         name: newName.value,
         number: newNumber.value
     });
+    deleteContact(contact)
+    console.log(newName.value)
     newName.value = ''
     newNumber.value = ''
     contact1.value = ''
     contact.preventDefault()
     closeModal()
     active(updateButtonRef)
+    console.log(contacts)
 }
+
+
+
 
 
 </script>
