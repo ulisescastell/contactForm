@@ -82,9 +82,7 @@ const updateContact = (contact) => {
         <h1>Contact book <span class="uli">by Uli</span></h1>
         <main>
             <div class="exp">
-                <h3>This basic program is a contact book where users can add contacts by entering a name and phone
-                    number. It displays the saved contacts in a list and allows users to filter them in real-time using
-                    a search input. The filtered results update dynamically as the user types.</h3>
+                <h3>This program is a basic contact book where users can add contacts by entering a name and phone number. The saved contacts are displayed in a list that can be filtered in real-time using a search input. The filtered results update dynamically as the user types. Additionally, it allows updating and deleting existing contacts through specific buttons for each action, with a modal form for updating contacts.</h3>
             </div>
             <form @submit="saveContact">
                 <div class="inputs">
