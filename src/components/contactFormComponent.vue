@@ -50,7 +50,6 @@
 </template>
 
 <style scoped>
-    
     main {
         width: 400px;
 
@@ -101,4 +100,5 @@
         font-size: 23px;
         font-style: italic;
     }
+
 </style>
