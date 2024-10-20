@@ -85,6 +85,7 @@ main {
 h3 {
     color: #61677C;
     opacity: 0.7;
+    text-align: justify;
 }
 
 .inputs {
