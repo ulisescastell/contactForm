@@ -10,6 +10,7 @@ const contact1 = ref('')
 const buttonRef = ref(null)
 const updateButtonRef = ref(null);
 const showModal = ref(false)
+const showModalD = ref(false)
 
 
 const saveContact = (contact) => {
@@ -40,6 +41,7 @@ const deleteContact = (contact) => {
     newNumber.value = ''
     contact1.value = ''
     active(buttonRef)
+    closeModal()
     console.log(contacts)
 }
 
@@ -54,8 +56,9 @@ const active = (button) => {
 
 const closeModal = () => {
     showModal.value = false 
+    showModalD.value = false 
 }
-  
+
 const updateContact = (contact) => {
     contacts.value.push({
         name: newName.value,
@@ -111,7 +114,7 @@ const updateContact = (contact) => {
                         :title="`Contact name: ${contact.name}, Number: ${contact.number}`">
                         {{ contact.name }} <span>   {{ contact.number }}</span>
                         <button @click="showModal = true" class="modal-trigger">Update</button>
-                        <button @click="deleteContact">Delete</button>
+                        <button @click="showModalD = true">Delete</button>
                     </li>
                 </div>
 
@@ -125,9 +128,27 @@ const updateContact = (contact) => {
                         <div class="modal-body">
                             <form @submit="updateContact">
                             <div class="newInputs">
-                                <input id="inputNm" type="text" v-model="newName" placeholder="Name" maxlength="17" required>
-                                <input id="inputNb" type="number" v-model="newNumber" placeholder="Number" min="0" max="999999999" required>
+                                <input id="inputNm" type="text" v-model="newName" placeholder="Name (you must fill this)" maxlength="17" required>
+                                <input id="inputNb" type="number" v-model="newNumber" placeholder="Number (you must fill this)" min="0" max="999999999" required>
                                 <button ref="updateButtonRef" type="submit">Update contact</button>
+                            </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="showModalD" class="modal-wrap" @click.self="closeModal">
+                    <div class="modal-bg"></div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="modal-title">Delete item</span>
+                            <span class="modal-close" @click="closeModal">✖</span>
+                        </div>
+                        <div class="modal-body">
+                            <form @submit="deleteContact">
+                            <div class="newInputs">
+                                <p>Are you sure you want to delete this contact?</p>
+                                <button ref="updateButtonRef" type="submit">Confirm</button>
                             </div>
                             </form> 
                         </div>
